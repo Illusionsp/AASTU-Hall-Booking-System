@@ -49,4 +49,101 @@ int main() {
 
     // --- SUPER LOOP (Keeps the program running for "Back" button) ---
     while (systemRunning) {
+        
+       while (!loggedIn && systemRunning) {
+            int authChoice;
+            cout << "\n\t==============================================\n";
+            cout << "\t   AASTU HALL & EVENT MANAGEMENT SYSTEM       \n";
+            cout << "\t==============================================\n";
+            cout << "\t1. Login\n";
+            cout << "\t2. Register New User\n";
+            cout << "\t3. View as Guest (Read Only)\n";
+            cout << "\t4. Exit Program\n";
+            cout << "\tSelect: ";
+
+            while(!(cin >> authChoice)) {
+                cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "\tInvalid input. Try again: ";
+            }
+
+            if (authChoice == 1) {
+                // --- LOGIN LOGIC ---
+                char u[20], p[20];
+                bool found = false;
+                cout << "\n\t--- LOGIN ---\n";
+                cout << "\tUsername: "; cin >> u;
+                cout << "\tPassword: "; cin >> p;
+
+                // Linear Search
+                for (int i = 0; i < userCount; i++) {
+                    if (strcmp(dbUsers[i], u) == 0 && strcmp(dbPass[i], p) == 0) {
+                        strcpy(currentUserRole, dbRoles[i]);
+                        found = true;
+                        loggedIn = true; // Breaks Auth Loop, moves to App Loop
+                        break;
+                    }
+                }
+                if(!found) {
+                    cout << "\n\t[ERROR] Invalid credentials.\n";
+                    cin.ignore(); cin.get();
+                }
+
+            } else if (authChoice == 2) {
+                // --- REGISTRATION LOGIC (SECURE VERSION) ---
+                if (userCount >= MAX_USERS) {
+                    cout << "\n\t[ERROR] Database Full!\n";
+                } else {
+                    cout << "\n\t--- REGISTRATION ---\n";
+                    int roleChoice;
+                    cout << "\tSelect Role (1=Student, 2=Admin): "; cin >> roleChoice;
+
+                    if (roleChoice == 2) {
+                        // Admin Path
+                        char key[20];
+                        cout << "\t[SECURITY] Enter Master Key: "; cin >> key;
+                        if(strcmp(key, "2024") == 0) {
+                            cout << "\tNew Username: "; cin >> dbUsers[userCount];
+                            cout << "\tNew Password: "; cin >> dbPass[userCount];
+                            strcpy(dbRoles[userCount], "admin");
+                            userCount++;
+                            cout << "\t[SUCCESS] Admin Account Created.\n";
+                        } else {
+                            cout << "\n\t[FAILED] Incorrect Master Key. Aborted.\n";
+                        }
+                    }
+                    else if (roleChoice == 1) {
+                        // Student Path
+                        cout << "\tNew Username: "; cin >> dbUsers[userCount];
+                        cout << "\tNew Password: "; cin >> dbPass[userCount];
+                        strcpy(dbRoles[userCount], "student");
+                        userCount++;
+                        cout << "\t[SUCCESS] Student Account Created.\n";
+                    }
+                    else {
+                        cout << "\t[ERROR] Invalid Role Selection.\n";
+                    }
+                }
+                cin.ignore(); cin.get();
+
+            } else if (authChoice == 3) {
+                // --- GUEST LOGIC ---
+                strcpy(currentUserRole, "guest");
+                loggedIn = true;
+            } else if (authChoice == 4) {
+                // --- EXIT LOGIC ---
+                systemRunning = false; // Stops the Super Loop
+            }
+        }
+
+    }
+
+        while (loggedIn && systemRunning) {
+            // Logged-in menu will be handled here
+            break; // temporary
+        }
+
+    // Temporary exit to avoid infinite loop
+    systemRunning = false;
+
+
 }
