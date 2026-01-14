@@ -49,4 +49,19 @@ int main() {
 
     // --- SUPER LOOP (Keeps the program running for "Back" button) ---
     while (systemRunning) {
+        
+       while (!loggedIn && systemRunning) {
+        // Login will be handled here
+        break; // temporary
+    }
+
+        while (loggedIn && systemRunning) {
+            // Logged-in menu will be handled here
+            break; // temporary
+        }
+
+    // Temporary exit to avoid infinite loop
+    systemRunning = false;
+
+
 }
