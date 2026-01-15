@@ -138,7 +138,51 @@ int main() {
     }
 
         while (loggedIn && systemRunning) {
-            // Logged-in menu will be handled here
+            #ifdef _WIN32
+                system("cls");
+            #else
+                system("clear");
+            #endif
+
+            cout << "\n\t==============================================\n";
+            cout << "\t   UNIVERSITY HALL BOOKING SYSTEM v1.0        \n";
+            cout << "\t==============================================\n";
+            cout << "\tLogged in as: " << currentUserRole << "\n\n";
+
+            // Grid Display
+            cout << left << setw(18) << "HALL NAME";
+            for(int j=0; j<NUM_SLOTS; j++) cout << setw(15) << TIME_SLOTS[j];
+            cout << "\n\t" << string(75, '-') << endl;
+
+            for(int i=0; i<NUM_HALLS; i++) {
+                cout << left << setw(18) << HALL_NAMES[i];
+                for(int j=0; j<NUM_SLOTS; j++) {
+                    if(schedule[i][j] == 0) cout << left << setw(15) << "[FREE]";
+                    else cout << left << setw(15) << bookings[i][j];
+                }
+                cout << endl;
+            }
+
+            // Menu
+            cout << "\n\t-----------------------------";
+            cout << "\n\t1. Book a Hall";
+            cout << "\n\t2. Edit Event Name";
+            cout << "\n\t3. Cancel Reservation";
+            cout << "\n\t4. Search by Event Name"; // UPDATED
+            cout << "\n\t5. View Statistics";
+            cout << "\n\t6. Back"; 
+            cout << "\n\t-----------------------------";
+            cout << "\n\tSelect Option: ";
+            
+            while(!(cin >> menuChoice)) {
+                cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "\tInvalid. Enter 1-6: ";
+            }
+
+            // Shared Variables for Switch
+            int hIndex, tIndex;
+            char eventInput[NAME_LEN]; // Changed var name to eventInput for clarity
+            int *statusPtr = nullptr; // Pointers (Ch 5)
             break; // temporary
         }
 
