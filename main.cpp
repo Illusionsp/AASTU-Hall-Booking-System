@@ -30,7 +30,7 @@ int main() {
     char bookings[NUM_HALLS][NUM_SLOTS][NAME_LEN];
     
     // Constant Names for Display
-    const char HALL_NAMES[NUM_HALLS][20] = {"Main Auditorium", "Conference A", "Conference B"};
+    const char HALL_NAMES[NUM_HALLS][20] = {"Old Graduation Hall", "Blue Carpet", "Red Carpet"};
     const char TIME_SLOTS[NUM_SLOTS][20] = {"08:00-10:00", "10:00-12:00", "13:00-15:00", "15:00-17:00"};
 
     // Initialize all booking slots to "---"
@@ -136,7 +136,7 @@ int main() {
         }
 
     }
-
+        int menuChoice;
         while (loggedIn && systemRunning) {
             #ifdef _WIN32
                 system("cls");
@@ -183,11 +183,50 @@ int main() {
             int hIndex, tIndex;
             char eventInput[NAME_LEN]; // Changed var name to eventInput for clarity
             int *statusPtr = nullptr; // Pointers (Ch 5)
-            break; // temporary
-        }
+            switch(menuChoice){
+            case 1:
+                    // --- BOOKING LOGIC ---
+                    if (strcmp(currentUserRole, "guest") == 0) {
+                        cout << "\n\t[ACCESS DENIED] Guests cannot book halls.\n";
+                    } else {
+                        cout << "\n\t--- NEW BOOKING ---\n";
+                        cout << "\tEnter Hall ID/ Row (0-2): "; cin >> hIndex;
+                        cout << "\tEnter Slot ID/ Column (0-3): "; cin >> tIndex;
+
+                        if(hIndex >= 0 && hIndex < NUM_HALLS && tIndex >= 0 && tIndex < NUM_SLOTS) {
+                            statusPtr = &schedule[hIndex][tIndex];
+                            if (*statusPtr == 1) {
+                                cout << "\n\t[FAILED] Slot occupied.\n";
+                            }
+                            else if (*statusPtr == 2) {
+                                cout << "\n\t[INFO] This slot has a PENDING booking request.\n";
+                            }
+                            else if (*statusPtr == 3) {
+                                cout << "\n\t[NOTICE] Previous request was REJECTED.\n";
+                                cout << "\t You can submit a new Booking request.\n";
+                                cout << "\tEnter Event Name: "; // UPDATED
+                                cin.ignore();
+                                cin.getline(bookings[hIndex][tIndex], NAME_LEN);
+                                *statusPtr = 2;
+                                cout << "\n\t[SUCCESS] New Booking request submitted.\n";
+                            }
+                            else if (*statusPtr == 0) {
+                                cout << "\tEnter Event Name: "; // UPDATED
+                                cin.ignore();
+                                cin.getline(bookings[hIndex][tIndex], NAME_LEN);
+                                *statusPtr = 2;
+                                cout << "\n\t[SUCCESS] Booking request submitted and waiting for approval.\n";
+                            }
+                        } else {
+                            cout << "\t[ERROR] Invalid ID.\n";
+                        }
+                    }
+                    break;
+            }
 
     // Temporary exit to avoid infinite loop
     systemRunning = false;
-
+        }
+        return 0;
 
 }
