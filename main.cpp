@@ -157,8 +157,14 @@ int main() {
             for(int i=0; i<NUM_HALLS; i++) {
                 cout << left << setw(18) << HALL_NAMES[i];
                 for(int j=0; j<NUM_SLOTS; j++) {
-                    if(schedule[i][j] == 0) cout << left << setw(15) << "[FREE]";
-                    else cout << left << setw(15) << bookings[i][j];
+                    if(schedule[i][j] == 0)
+                        cout << left << setw(15) << "[FREE]";
+                    else if(schedule[i][j] == 1)
+                        cout << left << setw(15) << "[APPROVED]";
+                    else if(schedule[i][j] == 2)
+                        cout << left << setw(15) << "[PENDING]";
+                    else if(schedule[i][j] == 3)
+                         cout << left << setw(15) << "[REJECTED]";
                 }
                 cout << endl;
             }
