@@ -53,7 +53,7 @@ This project strictly adheres to the **Chapters 1–5 Syllabus**, demonstrating 
 ## 🚀 How to Run
 1.  Clone the repository:
     ```bash
-    git clone [https://github.com/YourUsername/AASTU-Hall-Booking-System.git](https://github.com/YourUsername/AASTU-Hall-Booking-System.git)
+    git clone https://github.com/Illusionsp/AASTU-Hall-Booking-System
     ```
 2.  Open the project in **Code::Blocks**, **Dev-C++**, or **VS Code**.
 3.  Compile and Run `main.cpp`.
